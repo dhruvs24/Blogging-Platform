@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/blogdb
+    username: ${DB_USER}
+    password: ${DB_PASS}
+
+jpa:
+  hibernate:
+    ddl-auto: validate
