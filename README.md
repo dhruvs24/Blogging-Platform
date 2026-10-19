@@ -3,8 +3,8 @@
 ## Running the app
 ### Using Environment Variables
 
-DB_USER=<db username>
-DB_PASSWORD=<db password>
+DB_USER="db username"
+DB_PASS="db password"
 
 $ java -jar target/BlogPlatformAPI-0.0.1-SNAPSHOT.jar
 
