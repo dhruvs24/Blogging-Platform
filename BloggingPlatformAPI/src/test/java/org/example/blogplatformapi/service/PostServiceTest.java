@@ -56,7 +56,6 @@ class PostServiceTest {
         );
 
         assertEquals("User not found", exception.getMessage());
-
         verify(postRepository, never()).save(any(PostEntity.class));
     }
 
@@ -91,14 +90,11 @@ class PostServiceTest {
         when(postRepository.save(any(PostEntity.class)))
                 .thenReturn(savedEntity);
 
-
         Post result = postService.createPost(post);
-
 
         assertEquals(10, result.getId());
         assertEquals("Test Post", result.getTitle());
         assertEquals("Test Content", result.getContent());
-
         verify(userRepository).findById(1);
         verify(postRepository).save(any(PostEntity.class));
     }
@@ -112,7 +108,6 @@ class PostServiceTest {
                 .id(1)
                 .build();
 
-
         PostEntity postEntity = PostEntity.builder()
                 .id(10)
                 .title("Test Post")
@@ -120,20 +115,15 @@ class PostServiceTest {
                 .userEntity(userEntity)
                 .build();
 
-
         when(postRepository.findById(10))
                 .thenReturn(Optional.of(postEntity));
 
-
         Post result = postService.getPostById(10);
-
 
         assertEquals(10, result.getId());
         assertEquals("Test Post", result.getTitle());
         assertEquals("Test Content", result.getContent());
         assertEquals(1, result.getUser().getId());
-
-
         verify(postRepository).findById(10);
     }
 
@@ -144,14 +134,12 @@ class PostServiceTest {
         when(postRepository.findById(999))
                 .thenReturn(Optional.empty());
 
-
         RuntimeException exception = assertThrows(
                 RuntimeException.class,
                 () -> postService.getPostById(999)
         );
 
         assertEquals("Post not found", exception.getMessage());
-
         verify(postRepository).findById(999);
     }
 
@@ -159,22 +147,25 @@ class PostServiceTest {
     @Test
     void getAllPosts_returnsAllPosts() {
 
-        UserEntity userEntity = UserEntity.builder()
+        UserEntity userEntity1 = UserEntity.builder()
                 .id(1)
+                .build();
+        UserEntity userEntity2 = UserEntity.builder()
+                .id(2)
                 .build();
 
         PostEntity post1 = PostEntity.builder()
                 .id(10)
                 .title("First Post")
                 .content("First Content")
-                .userEntity(userEntity)
+                .userEntity(userEntity1)
                 .build();
 
         PostEntity post2 = PostEntity.builder()
                 .id(11)
                 .title("Second Post")
                 .content("Second Content")
-                .userEntity(userEntity)
+                .userEntity(userEntity2)
                 .build();
 
         when(postRepository.findAll())
@@ -187,7 +178,6 @@ class PostServiceTest {
         assertEquals(2, result.size());
         assertEquals("First Post", result.get(0).getTitle());
         assertEquals("Second Post", result.get(1).getTitle());
-
         verify(postRepository).findAll();
     }
 
@@ -216,13 +206,10 @@ class PostServiceTest {
         when(postRepository.save(existingEntity))
                 .thenReturn(existingEntity);
 
-
         Post result = postService.updatePost(10, updatedPost);
-
 
         assertEquals("New Title", result.getTitle());
         assertEquals("New Content", result.getContent());
-
         verify(postRepository).findById(10);
         verify(postRepository).save(existingEntity);
     }
@@ -249,11 +236,7 @@ class PostServiceTest {
         );
 
         assertEquals("Post not found", exception.getMessage());
-
         verify(postRepository).existsById(999);
         verify(postRepository, never()).deleteById(999);
     }
-
-
-
 }
